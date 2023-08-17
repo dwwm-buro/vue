@@ -1,4 +1,5 @@
 <script setup>
+import Computed from './components/Computed.vue';
 import Exercice1 from './components/Exercice1.vue';
 import Image from './components/Image.vue';
 import { ref } from 'vue';
@@ -30,6 +31,8 @@ const displayText = (event) => alert(event.target.value);
     Un texte
   </div>
   <input type="text" @keyup.enter="displayText">
+
+  <Computed />
 </template>
 
 <style scoped>
