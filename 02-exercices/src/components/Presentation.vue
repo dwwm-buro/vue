@@ -6,13 +6,13 @@ const age = ref(52);
 const gender = ref('girl');
 const inTenYears = computed(() => age.value + 10);
 
-const nameValid = computed(() => name.value.length >= 1 && name.value.length <= 15);
+const nameValid = computed(() => name.value.length > 0 && name.value.length <= 15);
 const ageValid = computed(() => age.value >= 1 && age.value < 100);
 
 const names = ['Toto', 'Titi', 'Tata', 'Jean', 'Eric', 'Fiorella'];
 const generate = () => {
     name.value = names[Math.floor(Math.random() * names.length)];
-    age.value = Math.floor(Math.random() * 100);
+    age.value = Math.floor(Math.random() * 100) + 1;
 };
 
 generate();
@@ -42,7 +42,7 @@ generate();
 
     <button @click="generate">Générer une personne</button>
 
-    <div class="result" v-if="nameValid && ageValid" :class="{ boy: gender === 'boy', girl: gender === 'girl' }">
+    <div class="result" v-if="nameValid && ageValid" :class="gender">
         <p>Mon nom est <strong>{{ name }}</strong> et j'ai <strong>{{ age }}</strong> ans.</p>
         <p>Dans 10 ans, j'aurai <strong>{{ inTenYears }}</strong> ans.</p>
         <p>Mon nom se compose de <strong>{{ name.length }}</strong> caractères.</p>
@@ -76,6 +76,7 @@ generate();
 .error {
     background-color: lightcoral;
     padding: 10px;
+    margin-top: 20px;
 }
 
 .error-message {
