@@ -1,12 +1,12 @@
 <script setup>
 const props = defineProps(['start', 'max']);
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const count = ref(props.start || 0);
 const decrement = () => count.value--;
 const increment = () => count.value++;
 const color = computed(() => {
-    if (count.value >= max) {
+    if (count.value >= props.max) {
         return 'red';
     } else {
         return '';
