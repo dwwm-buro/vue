@@ -8,11 +8,19 @@ const product = ref({
   image: 'https://cdn2.thecatapi.com/images/EhOq2RbaI.jpg',
   price: 10,
   variations: [
-    { color: 'blue' },
-    { color: 'red' }
+    { color: 'blue', price: 10, image: 'https://cdn2.thecatapi.com/images/EhOq2RbaI.jpg' },
+    { color: 'red', price: 12, image: 'https://cdn2.thecatapi.com/images/b80.jpg' },
+    { color: 'green', price: 14.35, image: 'https://cataas.com/c' }
   ],
+  selectedVariation: null,
 });
 const quantity = ref(1);
+
+const changeVariation = (variation) => {
+  product.value.selectedVariation = variation;
+  product.value.image = variation.image;
+  product.value.price = variation.price;
+}
 
 const title = computed(() => product.value.brand + ' ' + product.value.name);
 const price = computed(() => {
@@ -42,6 +50,14 @@ watch(quantity, (newQty, oldQty) => {
           {{ feature }}
         </li>
       </ul>
+
+      <div class="flex">
+        <div v-for="variation in product.variations" :key="variation.color"
+          :style="{ backgroundColor: variation.color }" class="variation"
+          :class="{ selected: product.selectedVariation === variation }"
+          @click="changeVariation(variation)">
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -88,7 +104,18 @@ input {
 }
 
 ul {
-  margin-top: 20px;
+  margin: 20px 0;
   list-style: none;
+}
+
+.variation {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.variation.selected {
+  border: 4px solid #000;
 }
 </style>
