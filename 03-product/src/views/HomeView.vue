@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 const product = ref({
   name: 'Cat',
   brand: 'Brand',
@@ -18,6 +18,12 @@ const title = computed(() => product.value.brand + ' ' + product.value.name);
 const price = computed(() => {
   return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(product.value.price * quantity.value);
 });
+
+watch(quantity, (newQty, oldQty) => {
+  if (newQty > Math.floor(product.value.stock / 2)) {
+    alert(`Attention, il reste ${product.value.stock - newQty} produits.`);
+  }
+});
 </script>
 
 <template>
@@ -30,6 +36,12 @@ const price = computed(() => {
         :max="product.stock" :disabled="product.stock <= 0">
       <p class="in-stock" v-if="product.stock > 0">En stock</p>
       <p class="out-stock" v-else>Pas de stock</p>
+
+      <ul>
+        <li v-for="(feature, index) in product.features" :key="index">
+          {{ feature }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -37,6 +49,7 @@ const price = computed(() => {
 <style scoped>
 * {
   margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -64,5 +77,18 @@ input {
   text-align: center;
   width: 100%;
   margin-bottom: 10px;
+}
+
+.in-stock {
+  color: green;
+}
+
+.out-stock {
+  color: lightcoral;
+}
+
+ul {
+  margin-top: 20px;
+  list-style: none;
 }
 </style>
